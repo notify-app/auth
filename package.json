@@ -1,0 +1,15 @@
+{
+  "name": "notify-auth",
+  "version": "0.1.0",
+  "description": "Authentication Server for notify",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Luca Tabone <taboneluca3@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "hat": "0.0.3",
+    "notify-store": "0.1.0"
+  }
+}

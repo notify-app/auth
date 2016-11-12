@@ -3,9 +3,9 @@
 const http = require('http')
 
 const config = require('../../config')
-const credAuth = require('../auth/credentials')
-const cookieAuth = require('../auth/cookie')
-const errors = require('../auth/errors')
+const credAuth = require('./auth/credentials')
+const cookieAuth = require('./auth/cookie')
+const errors = require('./auth/errors')
 
 module.exports = (req, res) => {
   return authenticate(cookieAuth, req, res)

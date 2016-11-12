@@ -3,8 +3,8 @@
 const qs = require('querystring')
 const hat = require('hat')
 
-const config = require('../../config')
-const notifyStore = require('../store')
+const config = require('../../../config')
+const notifyStore = require('../../store')
 const errors = require('./errors')
 
 module.exports = (req, res) => {

@@ -5,12 +5,12 @@ const middleware = require('notify-middleware')
 
 const config = require('../config')
 const corsListener = require('./listeners/cors')
-const credAuthListener = require('./listeners/credAuth')
+const authListener = require('./listeners/auth')
 
 const app = middleware()
 
 app.use(corsListener)
-app.use(credAuthListener)
+app.use(authListener)
 
 http.createServer(app).listen(config.port, () => {
   console.info(`auth server: listening on port ${config.port}`)

@@ -1,10 +1,12 @@
 'use strict'
 
+const qs = require('querystring')
+
 const config = require('../../config')
 const notifyStore = require('../store')
 const errors = require('./errors')
 
-module.exports = (req, res) => {
+module.exports = (req) => {
   return parseToken(req)
     .then(retrieveToken)
     .then(validateToken)
@@ -19,16 +21,10 @@ module.exports = (req, res) => {
  *                      if expected cookie is not found.
  */
 function parseToken (req) {
-  const cookies = req.headers.cookie.split(';')
+  const cookies = qs.parse(req.headers.cookie, '; ', '=')
+  const tokenValue = cookies[config.session.name]
 
-  for (var i = 0; i < cookies.length; i++) {
-    const cookie = cookies[i].split('=')
-
-    if (cookie[0].trim() === config.session.name) {
-      return Promise.resolve(cookie[1].trim())
-    }
-  }
-
+  if (tokenValue !== undefined) return Promise.resolve(tokenValue)
   return Promise.reject({ type: errors.INVALID_TOKEN })
 }
 

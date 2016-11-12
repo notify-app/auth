@@ -2,7 +2,7 @@
 
 const config = require('../../config')
 
-module.exports = (req, res) => {  
+module.exports = (req, res, next) => {
   const {accessControl} = config
   
   // Since all requests are expected to be made with 'WithCredentials' flag set
@@ -10,7 +10,7 @@ module.exports = (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', accessControl.origins)
   res.setHeader('Access-Control-Allow-Credentials', accessControl.credentials)
 
-  if (req.method !== 'OPTIONS') return true
+  if (req.method !== 'OPTIONS') return next()
 
   // Only when the request is preflighted, we provide info about supported
   // METHODS and HEADERS.
@@ -19,5 +19,4 @@ module.exports = (req, res) => {
   res.setHeader('Access-Control-Max-Age', 0)
 
   res.end()
-  return false
 }

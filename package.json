@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "hat": "0.0.3",
-    "notify-store": "0.1.0"
+    "notify-store": "0.1.0",
+    "notify-middleware": "0.1.0"
   }
 }

@@ -1,18 +1,17 @@
 'use strict'
 
 const http = require('http')
+const middleware = require('notify-middleware')
 
 const config = require('../config')
 const corsListener = require('./listeners/cors')
 const credAuthListener = require('./listeners/credAuth')
 
-const server = http.createServer((req, res) => {
-  if (req.url !== '/auth') return res.end()
+const app = middleware()
 
-  corsListener(req, res)
-    && credAuthListener(req, res)
-})
+app.use(corsListener)
+app.use(credAuthListener)
 
-server.listen(config.port, () => {
+http.createServer(app).listen(config.port, () => {
   console.info(`auth server: listening on port ${config.port}`)
 })

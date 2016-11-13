@@ -56,6 +56,7 @@ function onError (req, res, err) {
       return authenticate(credAuth, req, res)
     }
     default: {
+      console.error(err)
       res.statusCode = 500
       res.statusMessage = http.STATUS_CODES[500]
     }

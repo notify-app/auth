@@ -2,10 +2,10 @@
 
 const http = require('http')
 
-const config = require('../../config')
-const credAuth = require('./auth/credentials')
-const cookieAuth = require('./auth/cookie')
-const errors = require('./auth/errors')
+const config = require('../../../config')
+const credAuth = require('./credentials')
+const cookieAuth = require('./cookie')
+const errors = require('./errors')
 
 module.exports = (req, res) => {
   return authenticate(cookieAuth, req, res)

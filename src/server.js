@@ -1,6 +1,7 @@
 'use strict'
 
 const http = require('http')
+const {worker} = require('ipc-emitter')
 const middleware = require('notify-middleware')
 
 const config = require('../config')
@@ -10,5 +11,5 @@ const app = middleware()
 app.use(...listeners)
 
 http.createServer(app).listen(config.port, () => {
-  console.info(`auth server: listening on port ${config.port}`)
+  worker.emit('logs:info', 'auth', `listening on port ${config.port}`)
 })

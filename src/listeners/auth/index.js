@@ -2,6 +2,7 @@
 
 const http = require('http')
 
+const {worker} = require('ipc-emitter')
 const config = require('../../../config')
 const credAuth = require('./credentials')
 const cookieAuth = require('./cookie')
@@ -56,7 +57,7 @@ function onError (req, res, err) {
       return authenticate(credAuth, req, res)
     }
     default: {
-      console.error(err)
+      worker.emit('logs:error', 'auth', err)
       res.statusCode = 500
       res.statusMessage = http.STATUS_CODES[500]
     }

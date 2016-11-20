@@ -8,9 +8,7 @@ const errors = require('./errors')
 
 module.exports = (req) => {
   return parseToken(req.headers.cookie)
-    .then(retrieveToken)
     .then(validateToken)
-    .then(prepareUser)
 }
 
 /**
@@ -22,53 +20,17 @@ module.exports = (req) => {
  */
 function parseToken (cookieHeader) {
   return utils.getCookieValue(cookieHeader, config.session.name)
-    .catch(() => {
-      return Promise.reject({ type: errors.INVALID_TOKEN })
-    })
+    .catch(() => Promise.reject({ type: errors.INVALID_TOKEN }))
 }
 
 /**
- * retrieves token info stored in db. If token does not exists in db, stop
- * process.
- * @param  {String} token Token retrieved from cookie.
- * @return {Promise}      Resolved when token exists in db or rejected if it
- *                        doesn't.
- */
-function retrieveToken (token) {
-  return notifyStore.store.find(notifyStore.types.TOKENS, undefined, {
-    match: {
-      token: token
-    }
-  }).then(({payload}) => {
-    if (payload.count === 0) {
-      return Promise.reject({ type: errors.INVALID_TOKEN })
-    }
-
-    return payload.records[0]
-  })
-}
-
-/**
- * checks whether the token is still valid.
+ * Checks whether the token is still valid.
  * @param  {Object} token Token model from db.
  * @return {Promise}      Resolved with the user model the token belongs to, or
  *                        rejected if token is invalid.
  */
 function validateToken (token) {
-  const created = new Date(token.created)
-  let expire = new Date(token.created)
-  expire.setSeconds(expire.getSeconds() + config.session.maxAge)
-
-  if (expire > created) {
-    return notifyStore.store.find(notifyStore.types.USERS, token.user)
-  }
-
-  return notifyStore.store.delete(notifyStore.types.TOKENS, token.id)
-    .then(() => {
-      return Promise.reject({ type: errors.INVALID_TOKEN })
-    })
-}
-
-function prepareUser ({payload}) {
-  return payload.records[0]
+  return utils.getUserByToken(notifyStore, token, config.session.maxAge)
+    .then(({payload}) => payload.records[0])
+    .catch(() => Promise.reject({ type: errors.INVALID_TOKEN }))
 }

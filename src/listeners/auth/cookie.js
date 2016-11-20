@@ -1,13 +1,13 @@
 'use strict'
 
-const qs = require('querystring')
+const utils = require('notify-utils')
 
 const config = require('../../../config')
 const notifyStore = require('../../store')
 const errors = require('./errors')
 
 module.exports = (req) => {
-  return parseToken(req)
+  return parseToken(req.headers.cookie)
     .then(retrieveToken)
     .then(validateToken)
     .then(prepareUser)
@@ -16,16 +16,15 @@ module.exports = (req) => {
 /**
  * Parses the cookie header to retrieve the token. If expected cookie does not
  * exists, stop process.
- * @param  {http.IncomingMessage} req  HTTP request.
- * @return {Promise}    Resolved when the token has been retrieved or rejected
- *                      if expected cookie is not found.
+ * @param  {String} cookieHeader String listing all the available cookies.
+ * @return {Promise}             Resolved when the token has been retrieved or
+ *                               rejected if expected cookie is not found.
  */
-function parseToken (req) {
-  const cookies = qs.parse(req.headers.cookie, '; ', '=')
-  const tokenValue = cookies[config.session.name]
-
-  if (tokenValue !== undefined) return Promise.resolve(tokenValue)
-  return Promise.reject({ type: errors.INVALID_TOKEN })
+function parseToken (cookieHeader) {
+  return utils.getCookieValue(cookieHeader, config.session.name)
+    .catch(() => {
+      return Promise.reject({ type: errors.INVALID_TOKEN })
+    })
 }
 
 /**

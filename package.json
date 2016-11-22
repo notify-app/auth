@@ -10,7 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "hat": "0.0.3",
-    "ipc-emitter": "0.1.6",
+    "ipc-emitter": "0.2.0",
     "minimist": "1.2.0",
     "notify-middleware": "0.1.0",
     "notify-store": "0.1.0",

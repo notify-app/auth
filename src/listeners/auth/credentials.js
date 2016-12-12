@@ -63,7 +63,8 @@ function authUser (credentials) {
 
 /**
  * creates the access token.
- * @param  {http.ServerResponse} res  HTTP Response.
+ * @param  {http.IncomingMessage} req  HTTP request.
+ * @param  {http.ServerResponse}  res  HTTP Response.
  * @param  {Object} user  Object containing the details of the user.
  * @return {Promise}      Resolved once the token have been created both in the
  *                        db and in the response header.
@@ -73,9 +74,9 @@ function createToken (req, res, user) {
 
   return notifyStore.store.create(notifyStore.types.TOKENS, {
     token: token,
+    user: user.id,
     created: new Date(),
-    origin: req.headers.origin,
-    user: user.id
+    origin: req.headers.origin
   })
   .then(() => {
     const {session} = config

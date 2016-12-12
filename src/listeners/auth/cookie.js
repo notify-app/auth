@@ -19,7 +19,7 @@ module.exports = (req) => {
  *                               rejected if expected cookie is not found.
  */
 function parseToken (cookieHeader) {
-  return utils.getCookieValue(cookieHeader, config.session.name)
+  return utils.getCookieValue(cookieHeader, config.session.cookie)
     .catch(() => Promise.reject({ type: errors.INVALID_TOKEN }))
 }
 

@@ -10,7 +10,7 @@ const errors = require('./errors')
 module.exports = (req, res) => {
   return parsePOSTData(req)
     .then(authUser)
-    .then(createToken.bind(null, res))
+    .then(createToken.bind(null, req, res))
 }
 
 /**
@@ -68,12 +68,13 @@ function authUser (credentials) {
  * @return {Promise}      Resolved once the token have been created both in the
  *                        db and in the response header.
  */
-function createToken (res, user) {
+function createToken (req, res, user) {
   const token = hat()
 
   return notifyStore.store.create(notifyStore.types.TOKENS, {
     token: token,
     created: new Date(),
+    origin: req.headers.origin,
     user: user.id
   })
   .then(() => {

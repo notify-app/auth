@@ -8,7 +8,7 @@ const errors = require('./errors')
 
 module.exports = (req) => {
   return parseToken(req.headers.cookie)
-    .then(validateToken)
+    .then(token => validateToken(req, token))
 }
 
 /**
@@ -25,12 +25,19 @@ function parseToken (cookieHeader) {
 
 /**
  * Checks whether the token is still valid.
- * @param  {Object} token Token model from db.
+ * @param  {http.IncomingMessage} req    HTTP request.
+ * @param  {Object}               token  Token model from db.
  * @return {Promise}      Resolved with the user model the token belongs to, or
  *                        rejected if token is invalid.
  */
-function validateToken (token) {
-  return utils.getUserByToken(notifyStore, token, config.session.maxAge)
+function validateToken (req, token) {
+  const opts = {
+    notifyStore,
+    origin: req.headers.origin,
+    maxAge: config.session.maxAge
+  }
+
+  return utils.getUserByToken(token, opts)
     .then(({payload}) => payload.records[0])
     .catch(() => Promise.reject({ type: errors.INVALID_TOKEN }))
 }

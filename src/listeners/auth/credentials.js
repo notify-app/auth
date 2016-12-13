@@ -80,7 +80,7 @@ function createToken (req, res, user) {
   })
   .then(() => {
     const {session} = config
-    const cookie = `${session.name}=${token}; Max-Age=${session.maxAge}`
+    const cookie = `${session.cookie}=${token}; Max-Age=${session.maxAge}`
     res.setHeader('Set-Cookie', cookie)
 
     return user

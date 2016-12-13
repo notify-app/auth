@@ -3,7 +3,6 @@
 const http = require('http')
 
 const {worker} = require('ipc-emitter')
-const config = require('../../../config')
 const credAuth = require('./credentials')
 const cookieAuth = require('./cookie')
 const errors = require('./errors')

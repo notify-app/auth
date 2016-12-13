@@ -4,7 +4,7 @@ const config = require('../../../config')
 
 module.exports = (req, res, next) => {
   const {accessControl} = config
-  
+
   // Since all requests are expected to be made with 'WithCredentials' flag set
   // to 'true', we need to pass the following headers on each request.
   res.setHeader('Access-Control-Allow-Origin', accessControl.origins)

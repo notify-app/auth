@@ -6,7 +6,7 @@ module.exports = {
    * @type {String}
    */
   INVALID_CREDENTIALS: 1,
-  
+
   /**
    * Invalid token.
    * @type {Number}

@@ -3,23 +3,11 @@
 const http = require('http')
 
 const {worker} = require('ipc-emitter')
-const credAuth = require('./credentials')
 const cookieAuth = require('./cookie')
 const errors = require('./errors')
 
 module.exports = (req, res) => {
-  return authenticate(cookieAuth, req, res)
-}
-
-/**
- * authenticate the user either using cookie info or the credentials.
- * @param  {Promise} promise  Promise to authenticate the user.
- * @param  {http.IncomingMessage} req  HTTP request.
- * @param  {http.ServerResponse} res   HTTP response.
- * @return {Promise}    Resolved when a response has been sent.
- */
-function authenticate (promise, req, res) {
-  return promise(req, res)
+  return cookieAuth(req)
     .then(includeInfo.bind(null, res))
     .catch(onError.bind(null, req, res))
     .then(() => {
@@ -47,13 +35,10 @@ function includeInfo (res, user) {
  */
 function onError (req, res, err) {
   switch (err.type) {
-    case errors.INVALID_CREDENTIALS: {
+    case errors.INVALID_TOKEN: {
       res.statusCode = 401
       res.statusMessage = http.STATUS_CODES[401]
       break
-    }
-    case errors.INVALID_TOKEN: {
-      return authenticate(credAuth, req, res)
     }
     default: {
       worker.emit('logs:error', 'auth', err)

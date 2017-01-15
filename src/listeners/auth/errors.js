@@ -2,14 +2,8 @@
 
 module.exports = {
   /**
-   * Invalid credentials
-   * @type {String}
-   */
-  INVALID_CREDENTIALS: 1,
-
-  /**
    * Invalid token.
    * @type {Number}
    */
-  INVALID_TOKEN: 2
+  INVALID_TOKEN: 0
 }

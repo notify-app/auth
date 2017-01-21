@@ -11,5 +11,5 @@ const app = middleware()
 app.use(...listeners)
 
 http.createServer(app).listen(config.port, () => {
-  logger.info('`listening on port ${config.port}`')
+  logger.info(`listening on port ${config.port}`)
 })

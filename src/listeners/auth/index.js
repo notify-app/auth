@@ -2,7 +2,7 @@
 
 const http = require('http')
 
-const {worker} = require('ipc-emitter')
+const logger = require('../../logger')
 const cookieAuth = require('./cookie')
 const errors = require('./errors')
 
@@ -21,11 +21,7 @@ module.exports = (req, res) => {
  * @param  {Object} user  Object containing the details of the user.
  */
 function includeInfo (res, user) {
-  const payload = {
-    id: user.id
-  }
-
-  res.write(JSON.stringify(payload))
+  res.write(JSON.stringify({ id: user.id }))
 }
 
 /**
@@ -41,7 +37,7 @@ function onError (req, res, err) {
       break
     }
     default: {
-      worker.emit('logs:error', 'auth', err)
+      logger.error(err)
       res.statusCode = 500
       res.statusMessage = http.STATUS_CODES[500]
     }

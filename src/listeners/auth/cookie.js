@@ -32,12 +32,10 @@ function parseToken (cookieHeader) {
  */
 function validateToken (req, token) {
   const opts = {
-    notifyStore,
     origin: req.headers.origin,
     maxAge: config.session.maxAge
   }
 
-  return utils.getUserByToken(token, opts)
-    .then(({payload}) => payload.records[0])
+  return utils.getUserByToken(token, notifyStore, opts)
     .catch(() => Promise.reject({ type: errors.INVALID_TOKEN }))
 }

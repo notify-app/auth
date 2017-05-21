@@ -99,8 +99,8 @@ describe('Scenario: Logging in with an invalid Access Token', function () {
           .then(() => {
             assert.strictEqual(utils.getUserByToken.calledOnce, true)
             assert.strictEqual(utils.getUserByToken.getCall(0).args[0], token)
-            assert.deepStrictEqual(utils.getUserByToken.getCall(0).args[1], {
-              notifyStore,
+            assert.strictEqual(utils.getUserByToken.getCall(0).args[1], notifyStore)
+            assert.deepStrictEqual(utils.getUserByToken.getCall(0).args[2], {
               origin: req.headers.origin,
               maxAge: config.session.maxAge
             })
@@ -143,11 +143,7 @@ describe('Scenario: Logging in with a valid Access Token', function () {
         }
 
         sinon.spy(utils, 'getCookieValue')
-        sinon.stub(utils, 'getUserByToken').returns(Promise.resolve({
-          payload: {
-            records: [ user ]
-          }
-        }))
+        sinon.stub(utils, 'getUserByToken').returns(Promise.resolve(user))
       })
 
       afterEach(function () {
@@ -171,8 +167,8 @@ describe('Scenario: Logging in with a valid Access Token', function () {
           .then(() => {
             assert.strictEqual(utils.getUserByToken.calledOnce, true)
             assert.strictEqual(utils.getUserByToken.getCall(0).args[0], token)
-            assert.deepStrictEqual(utils.getUserByToken.getCall(0).args[1], {
-              notifyStore,
+            assert.strictEqual(utils.getUserByToken.getCall(0).args[1], notifyStore)
+            assert.deepStrictEqual(utils.getUserByToken.getCall(0).args[2], {
               origin: req.headers.origin,
               maxAge: config.session.maxAge
             })

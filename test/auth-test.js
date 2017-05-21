@@ -99,7 +99,8 @@ describe('Scenario: Logging in with an invalid Access Token', function () {
           .then(() => {
             assert.strictEqual(utils.getUserByToken.calledOnce, true)
             assert.strictEqual(utils.getUserByToken.getCall(0).args[0], token)
-            assert.strictEqual(utils.getUserByToken.getCall(0).args[1], notifyStore)
+            assert.strictEqual(utils.getUserByToken.getCall(0).args[1],
+              notifyStore)
             assert.deepStrictEqual(utils.getUserByToken.getCall(0).args[2], {
               origin: req.headers.origin,
               maxAge: config.session.maxAge
@@ -167,7 +168,8 @@ describe('Scenario: Logging in with a valid Access Token', function () {
           .then(() => {
             assert.strictEqual(utils.getUserByToken.calledOnce, true)
             assert.strictEqual(utils.getUserByToken.getCall(0).args[0], token)
-            assert.strictEqual(utils.getUserByToken.getCall(0).args[1], notifyStore)
+            assert.strictEqual(utils.getUserByToken.getCall(0).args[1],
+              notifyStore)
             assert.deepStrictEqual(utils.getUserByToken.getCall(0).args[2], {
               origin: req.headers.origin,
               maxAge: config.session.maxAge
